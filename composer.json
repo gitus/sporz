@@ -2,7 +2,6 @@
     "name": "sporz",
     "description": "sporz game",
     "license": "MIT",
-    "keywords": ["pragma", "f
     "authors": [
         {"name": "Simon Lieb"},
         {"name": "Geffroy Farinet"}
