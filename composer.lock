@@ -1,0 +1,68 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "This file is @generated automatically"
+    ],
+    "hash": "6287860f973d5d2381a89897cdf455db",
+    "content-hash": "3e2b540cb251e4fcbf9ebe8c8e99bed4",
+    "packages": [
+        {
+            "name": "pragma-framework/core",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/pragma-framework/core.git",
+                "reference": "5aa7f464ecfc3e476ba1e8d30e50d460fa29d9a3"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/pragma-framework/core/zipball/5aa7f464ecfc3e476ba1e8d30e50d460fa29d9a3",
+                "reference": "5aa7f464ecfc3e476ba1e8d30e50d460fa29d9a3",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Pragma": "."
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Cyril Rouyer"
+                }
+            ],
+            "description": "The Pragma Core Module for Pragma Framework",
+            "keywords": [
+                "controller",
+                "core",
+                "framework",
+                "model",
+                "orm",
+                "pragma",
+                "router",
+                "view"
+            ],
+            "time": "2016-11-06 20:53:57"
+        }
+    ],
+    "packages-dev": [],
+    "aliases": [],
+    "minimum-stability": "stable",
+    "stability-flags": {
+        "pragma-framework/core": 20
+    },
+    "prefer-stable": false,
+    "prefer-lowest": false,
+    "platform": {
+        "php": ">=5.3.0"
+    },
+    "platform-dev": []
+}

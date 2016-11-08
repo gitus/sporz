@@ -1,0 +1,17 @@
+{
+    "name": "sporz",
+    "description": "sporz game",
+    "license": "MIT",
+    "keywords": ["pragma", "f
+    "authors": [
+        {"name": "Simon Lieb"},
+        {"name": "Geffroy Farinet"}
+    ],
+    "require":{
+        "php": ">=5.3.0",
+        "pragma-framework/core": "dev-master"
+    },
+    "autoload":{
+        "psr-4" : {"App\\": "app/"}
+    }
+}
