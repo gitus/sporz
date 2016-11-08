@@ -1,6 +1,8 @@
 <?php
 
-class Game extends Pragma\ORM\Model
+namespace App\Models;
+
+class Game extends \Pragma\ORM\Model
 {
 	private $players;
 	private $id;
