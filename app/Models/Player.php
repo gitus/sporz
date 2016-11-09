@@ -13,7 +13,7 @@ class Player extends \Pragma\ORM\Model
 
 	public function __construct()
 	{
-		return parent::__construct();
+		return parent::__construct('player');
 	}
 
 }
