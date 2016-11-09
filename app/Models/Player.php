@@ -1,5 +1,8 @@
 <?php
-class Player extends Pragma\ORM\Model
+
+namespace App\Models;
+
+class Player extends \Pragma\ORM\Model
 {
 	private $name;
 	private $keyId;
@@ -10,7 +13,7 @@ class Player extends Pragma\ORM\Model
 
 	public function __construct()
 	{
-		return parent::__construct();
+		return parent::__construct('player');
 	}
 
 }
