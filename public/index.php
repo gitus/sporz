@@ -21,6 +21,41 @@ $app->get('/', function () {
     View::getInstance()->assign('joinableGames', Game::getNonStartedGame());
     View::getInstance()->render('index.tpl.php');
 });
+
+$app->group('/game', function () use ($app) {
+    $app->post('', function () use ($app) {
+        $game = new Game();
+        $game->name = filter_input(INPUT_POST, 'name', FILTER_SANITIZE_STRING);
+
+        $game->created = $game->updated = date('c');
+
+        $game->save();
+
+        Redirect::to($app->url_for('game-detail', [':gameid' => $game->id]));
+    });
+    $app->get('/add', function () {
+        $view = View::getInstance();
+
+        $game = new Game();
+
+        $view->assign('game', $game);
+        $view->render('game/form.tpl.php');
+    });
+    $app->group('/:gameid', function () use ($app) {
+        $app->get('', function ($gameId) {
+            $view = View::getInstance();
+
+            $game = new Game();
+            $game->open($gameId);
+
+            $view->assign('game', $game);
+
+            // XXX: Just for testing purpose - Should be a detail view or something
+            $view->render('game/form.tpl.php');
+        })->alias('game-detail');
+    });
+});
+
 $app->get('/:keyId', function () {
     //si keyId existe, displayGame
     //$player=new Player();
