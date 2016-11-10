@@ -35,18 +35,18 @@ class Player extends \Pragma\ORM\Model
 
 	public function mutate() {
 		if ($this->genome != self::GENOME_RESISTANT) {
-			$this->mutated=1;
-			return true;
+			$this->mutated = 1;
 		}
-		return false;
+
+		return $this->mutated;
 	}
 
 	public function cure() {
-		if ($this->genome != self::GENOME_HOST || !$this->mutated) {
-			$this->mutated=0;
-			return true;
+		if ($this->genome != self::GENOME_HOST) {
+			$this->mutated = 0;
 		}
-		return false;
+
+        return !$this->mutated;
 	}
 
 }
