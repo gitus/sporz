@@ -32,8 +32,8 @@ class Player extends \Pragma\ORM\Model
 		}
 		$this->genome=$genome;
 	}
-		
-	public function mutate(){
+
+	public function mutate() {
 		if ($this->genome != self::GENOME_RESISTANT) {
 			$this->mutated=1;
 			return true;
@@ -41,7 +41,7 @@ class Player extends \Pragma\ORM\Model
 		return false;
 	}
 
-	public function cure(){
+	public function cure() {
 		if ($this->genome != self::GENOME_HOST || !$this->mutated) {
 			$this->mutated=0;
 			return true;

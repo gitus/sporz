@@ -88,7 +88,7 @@ class Game extends \Pragma\ORM\Model
 		$this->players[$index_of_modified_genomes[1]]->setGenome(Player::GENOME_RESISTANT);
 
 		array_push($this->players, $bad_guy, $first_doc, $second_doc);
-		
+
 		$some_guy=array_shift($this->players);
 		$some_guy->role="psy";
 		array_push($this->players,$some_guy);
