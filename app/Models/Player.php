@@ -24,13 +24,10 @@ class Player extends \Pragma\ORM\Model
 
     public function setGenome($genome)
     {
-        if ($genome > 0) {
-            $genome = 1;
-        } elseif ($genome < 0) {
-            $genome = -1;
-        } else {
-            $genome = 0;
+        if (!in_array($genome, [self::GENOME_HOST, self::GENOME_RESISTANT, self::GENOME_NORMAL])) {
+            $genome = self::GENOME_NORMAL;
         }
+
         $this->genome = $genome;
     }
 
