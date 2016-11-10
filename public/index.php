@@ -7,6 +7,8 @@ use Pragma\View\View;
 use Pragma\Router\Router;
 use App\Models\Game;
 
+use App\Helpers\Redirect;
+
 $view = View::getInstance();
 $view->set_tpl_path(APP_PATH.'/Views/');
 $view->setLayout('layout.tpl.php');
