@@ -2,11 +2,11 @@
 
 namespace App\Models;
 
-define("DAY",0);
-define("NIGHT",1);
-
 class Game extends \Pragma\ORM\Model
 {
+    const PHASE_DAY     = 0;
+    const PHASE_NIGHT   = 1;
+
 	private $players;
 	private $id;
 	private $started;
