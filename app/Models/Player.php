@@ -4,6 +4,10 @@ namespace App\Models;
 
 class Player extends \Pragma\ORM\Model
 {
+    const GENOME_HOST       = 0;
+    const GENOME_NORMAL     = 1;
+    const GENOME_RESISTANT  = 2;
+
 	private $name;
 	private $keyId;
 	private $genome;
@@ -30,7 +34,7 @@ class Player extends \Pragma\ORM\Model
 	}
 		
 	public function mutate(){
-		if($this->genome<1){
+		if ($this->genome != self::GENOME_RESISTANT) {
 			$this->mutated=1;
 			return true;
 		}
@@ -38,7 +42,7 @@ class Player extends \Pragma\ORM\Model
 	}
 
 	public function cure(){
-		if($this->genome>-1 || !$this->mutated){
+		if ($this->genome != self::GENOME_HOST || !$this->mutated) {
 			$this->mutated=0;
 			return true;
 		}

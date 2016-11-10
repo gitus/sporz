@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Models\Player;
+
 class Game extends \Pragma\ORM\Model
 {
     const PHASE_DAY     = 0;
@@ -73,7 +75,7 @@ class Game extends \Pragma\ORM\Model
 
 		$bad_guy=array_shift($this->players);
 		$bad_guy->mutate();
-		$bad_guy->setGenome(-1);
+		$bad_guy->setGenome(Player::GENOME_HOST);
 
 		$first_doc=array_shift($this->players);
 		$fist_doc->role="medic";
@@ -82,8 +84,8 @@ class Game extends \Pragma\ORM\Model
 		$second_doc->role="medic";
 
 		$index_of_modified_genomes=array_rand($this->players, 2);
-		$this->players[$index_of_modified_genomes[0]]->setGenome(-1);
-		$this->players[$index_of_modified_genomes[1]]->setGenome(1);
+		$this->players[$index_of_modified_genomes[0]]->setGenome(Player::GENOME_HOST);
+		$this->players[$index_of_modified_genomes[1]]->setGenome(Player::GENOME_RESISTANT);
 
 		array_push($this->players, $bad_guy, $first_doc, $second_doc);
 		
