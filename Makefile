@@ -6,4 +6,7 @@ config/config.php:
 vendor:
 	composer install
 
-.PHONY: all
+migration: config/config.php vendor
+	vendor/bin/phinx migrate
+
+.PHONY: all migration
