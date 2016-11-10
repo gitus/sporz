@@ -112,12 +112,6 @@ class Game extends \Pragma\ORM\Model
 	}
 
 	public static function getNonStartedGame(){
-		$joinable=Game::all();
-		foreach($joinable as $k=>$val){
-			if($val->started){
-				unset($joinable[$k]);
-			}
-		}
-		return $joinable;
+		return Game::forge()->where('started', '=', 0)->get_objects();
 	}
 }
