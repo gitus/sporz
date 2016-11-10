@@ -2,118 +2,129 @@
 
 namespace App\Models;
 
-use App\Models\Player;
-
 class Game extends \Pragma\ORM\Model
 {
     const PHASE_DAY     = 0;
     const PHASE_NIGHT   = 1;
 
-	private $players;
-	private $id;
-	private $started;
-	private $phase;
-	private $leader;
+    private $players;
+    private $id;
+    private $started;
+    private $phase;
+    private $leader;
 
-	public function __construct()
-	{
-		return parent::__construct('game');
-	}
+    public function __construct()
+    {
+        return parent::__construct('game');
+    }
 
-	//the KeyId is the string used by a player in order to authenticate in-game (security is not a concern here)
-	public static function genKeyId(){
-		//TODO
-	}
+    //the KeyId is the string used by a player in order to authenticate in-game (security is not a concern here)
+    public static function genKeyId()
+    {
+        //TODO
+    }
 
-	public function addPlayer($name)
-	{
-		$keyId=null;
-		if(!($this->started) && getPlayerByName($name)==null){
-			$new_player=new Player($name);
-			$keyId=$new_player->getKeyId();
-			array_push($this->players,$new_player);
-		}
-		return $keyId;
-	}
+    public function addPlayer($name)
+    {
+        $keyId = null;
+        if (!($this->started) && getPlayerByName($name) == null) {
+            $new_player = new Player($name);
+            $keyId = $new_player->getKeyId();
+            array_push($this->players, $new_player);
+        }
 
-	public function getPlayerByRole($role){
-		$tmp=array();
-		foreach($this->players as $player){
-			if($role == $player->role){
-				array_push($tmp,$player);
-			}
-		}
-		if(count($tmp)>1){
-			return $tmp;
-		}
-		if(count($tmp)==1){
-			return $tmp[0];
-		}
-		return null;
-	}
-	public function getPlayerByName($name){
-		foreach($this->players as $player){
-			if($name == $player->name){
-				return $player;
-			}
-		}
-		return null;
-	}
+        return $keyId;
+    }
 
-	public function startGame(){
-		if(count($this->players)>=7){
-			$this->started=1;
-			$this->initGame();
-		}
-	}
+    public function getPlayerByRole($role)
+    {
+        $tmp = array();
+        foreach ($this->players as $player) {
+            if ($role == $player->role) {
+                array_push($tmp, $player);
+            }
+        }
+        if (count($tmp) > 1) {
+            return $tmp;
+        }
+        if (count($tmp) == 1) {
+            return $tmp[0];
+        }
 
-	public function initGame(){
-		if(count($this->players)<7){
-			return false;
-		}
-		shuffle($this->players);
+        return null;
+    }
+    public function getPlayerByName($name)
+    {
+        foreach ($this->players as $player) {
+            if ($name == $player->name) {
+                return $player;
+            }
+        }
 
-		$bad_guy=array_shift($this->players);
-		$bad_guy->mutate();
-		$bad_guy->setGenome(Player::GENOME_HOST);
+        return null;
+    }
 
-		$first_doc=array_shift($this->players);
-		$fist_doc->role="medic";
+    public function startGame()
+    {
+        if (count($this->players) >= 7) {
+            $this->started = 1;
+            $this->initGame();
+        }
+    }
 
-		$second_doc=array_shift($this->players);
-		$second_doc->role="medic";
+    public function initGame()
+    {
+        if (count($this->players) < 7) {
+            return false;
+        }
+        shuffle($this->players);
 
-		$index_of_modified_genomes=array_rand($this->players, 2);
-		$this->players[$index_of_modified_genomes[0]]->setGenome(Player::GENOME_HOST);
-		$this->players[$index_of_modified_genomes[1]]->setGenome(Player::GENOME_RESISTANT);
+        $bad_guy = array_shift($this->players);
+        $bad_guy->mutate();
+        $bad_guy->setGenome(Player::GENOME_HOST);
 
-		array_push($this->players, $bad_guy, $first_doc, $second_doc);
+        $first_doc = array_shift($this->players);
+        $fist_doc->role = 'medic';
 
-		$some_guy=array_shift($this->players);
-		$some_guy->role="psy";
-		array_push($this->players,$some_guy);
-		$some_guy=array_shift($this->players);
-		$some_guy->role="geneticist";
-		array_push($this->players,$some_guy);
-		$some_guy=array_shift($this->players);
-		$some_guy->role="it";
-		array_push($this->players,$some_guy);
-		$some_guy=array_shift($this->players);
-		$some_guy->role="hacker";
-		array_push($this->players,$some_guy);
-		return true;
-	}
+        $second_doc = array_shift($this->players);
+        $second_doc->role = 'medic';
 
-	public function electLeader($name){
-		$wanabe=getPlayerByName($name);
-		if($wanabe && $wanabe->alive){
-			$this->leader=$name;
-			return true;
-		}
-		return false;
-	}
+        $index_of_modified_genomes = array_rand($this->players, 2);
+        $this->players[$index_of_modified_genomes[0]]->setGenome(Player::GENOME_HOST);
+        $this->players[$index_of_modified_genomes[1]]->setGenome(Player::GENOME_RESISTANT);
 
-	public static function getNonStartedGame(){
-		return Game::forge()->where('started', '=', 0)->get_objects();
-	}
+        array_push($this->players, $bad_guy, $first_doc, $second_doc);
+
+        $some_guy = array_shift($this->players);
+        $some_guy->role = 'psy';
+        array_push($this->players, $some_guy);
+        $some_guy = array_shift($this->players);
+        $some_guy->role = 'geneticist';
+        array_push($this->players, $some_guy);
+        $some_guy = array_shift($this->players);
+        $some_guy->role = 'it';
+        array_push($this->players, $some_guy);
+        $some_guy = array_shift($this->players);
+        $some_guy->role = 'hacker';
+        array_push($this->players, $some_guy);
+
+        return true;
+    }
+
+    public function electLeader($name)
+    {
+        $wanabe = getPlayerByName($name);
+        if ($wanabe && $wanabe->alive) {
+            $this->leader = $name;
+
+            return true;
+        }
+
+        return false;
+    }
+
+    public static function getNonStartedGame()
+    {
+        return self::forge()->where('started', '=', 0)->get_objects();
+    }
 }
