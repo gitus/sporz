@@ -6,6 +6,15 @@
         <link href="/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 	</head>
 	<body>
-	<?php $this->yields(); ?>
+    <h1>Sporz</h1>
+    <ul class="nav nav-tabs">
+        <li role="presentation">
+            <a href="/">Home</a>
+        </li>
+        <li role="presentation">
+            <a href="/game/add">Create Game</a>
+        </li>
+    </ul>
+    <?php $this->yields(); ?>
 	</body>
 </html>
