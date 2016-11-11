@@ -16,9 +16,10 @@ $view->setLayout('layout.tpl.php');
 $app = Router::getInstance();
 
 //define your routes here
-$app->get('/', function () {
+$app->get('/', function () use ($app) {
     //HOME PAGE
     View::getInstance()->assign('joinableGames', Game::getNonStartedGame());
+    View::getInstance()->assign('router', $app);
     View::getInstance()->render('index.tpl.php');
 });
 
