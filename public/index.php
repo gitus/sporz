@@ -31,7 +31,7 @@ $app->group('/game', function () use ($app) {
 
         $game->save();
 
-        Redirect::to($app->url_for('game-detail', [':gameid' => $game->id]));
+        Redirect::to($app->url_for('game-detail', ['gameid' => $game->id]));
     });
     $app->get('/add', function () {
         $view = View::getInstance();
