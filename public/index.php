@@ -44,7 +44,7 @@ $app->group('/game', function () use ($app) {
         $view->render('game/form.tpl.php');
     });
     $app->group('/:gameid', function () use ($app) {
-        $app->get('', function ($gameId) {
+        $app->get('', function ($gameId) use ($app) {
             $view = View::getInstance();
 
             $game = new Game();
@@ -52,8 +52,9 @@ $app->group('/game', function () use ($app) {
 
             $view->assign('game', $game);
 
-            // XXX: Just for testing purpose - Should be a detail view or something
-            $view->render('game/form.tpl.php');
+            $view->assign('edit-link', $app->url_for('game-edit', ['gameid' => $game->id]));
+
+            $view->render('game/detail.tpl.php');
         })->alias('game-detail');
         $app->get('/edit', function ($gameId) use ($app) {
             $view = View::getInstance();
