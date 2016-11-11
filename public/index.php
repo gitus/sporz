@@ -53,6 +53,18 @@ $app->group('/game', function () use ($app) {
             // XXX: Just for testing purpose - Should be a detail view or something
             $view->render('game/form.tpl.php');
         })->alias('game-detail');
+        $app->post('', function ($gameId) use ($app) {
+            $game = new Game();
+            $game->open($gameId);
+
+            $game->name = filter_input(INPUT_POST, 'name', FILTER_SANITIZE_STRING);
+
+            $game->updated = date('c');
+
+            $game->save();
+
+            Redirect::to($app->url_for('game-detail', ['gameid' => $game->id]));
+        });
     });
 });
 
