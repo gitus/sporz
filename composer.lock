@@ -13,12 +13,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/pragma-framework/core.git",
-                "reference": "e93890f306a46de2517ab664321c047f9a319058"
+                "reference": "925d2de92cdb50b133d66941ec8aaddac1fa54d0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/pragma-framework/core/zipball/e93890f306a46de2517ab664321c047f9a319058",
-                "reference": "e93890f306a46de2517ab664321c047f9a319058",
+                "url": "https://api.github.com/repos/pragma-framework/core/zipball/925d2de92cdb50b133d66941ec8aaddac1fa54d0",
+                "reference": "925d2de92cdb50b133d66941ec8aaddac1fa54d0",
                 "shasum": ""
             },
             "require": {
@@ -50,7 +50,7 @@
                 "router",
                 "view"
             ],
-            "time": "2016-11-09 13:02:35"
+            "time": "2016-11-10 17:26:37"
         },
         {
             "name": "psr/log",
