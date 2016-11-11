@@ -55,6 +55,17 @@ $app->group('/game', function () use ($app) {
             // XXX: Just for testing purpose - Should be a detail view or something
             $view->render('game/form.tpl.php');
         })->alias('game-detail');
+        $app->get('/edit', function ($gameId) use ($app) {
+            $view = View::getInstance();
+
+            $game = new Game();
+            $game->open($gameId);
+
+            $view->assign('game', $game);
+
+            $view->assign('form-action', $app->url_for('game-save', ['gameid' => $game->id]));
+            $view->render('game/form.tpl.php');
+        })->alias('game-edit');
         $app->post('', function ($gameId) use ($app) {
             $game = new Game();
             $game->open($gameId);
@@ -66,7 +77,7 @@ $app->group('/game', function () use ($app) {
             $game->save();
 
             Redirect::to($app->url_for('game-detail', ['gameid' => $game->id]));
-        });
+        })->alias('game-save');
     });
 });
 
