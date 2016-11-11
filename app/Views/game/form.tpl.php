@@ -1,4 +1,4 @@
-<form method="post" action="/game<?= !$this->get('game')->is_new() ? '/'.$this->get('game')->id : ''; ?>">
+<form method="post" action="<?= $this->get('form-action'); ?>">
     <h2><?= $this->get('game')->is_new() ? 'Create' : 'Edit'; ?></h2>
     <div class="form-group">
         <label for="name">Name</label>

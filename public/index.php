@@ -32,13 +32,15 @@ $app->group('/game', function () use ($app) {
         $game->save();
 
         Redirect::to($app->url_for('game-detail', ['gameid' => $game->id]));
-    });
-    $app->get('/add', function () {
+    })->alias('game-creation');
+    $app->get('/add', function ()  use ($app) {
         $view = View::getInstance();
 
         $game = new Game();
 
         $view->assign('game', $game);
+
+        $view->assign('form-action', $app->url_for('game-creation'));
         $view->render('game/form.tpl.php');
     });
     $app->group('/:gameid', function () use ($app) {
