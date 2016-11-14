@@ -7,6 +7,15 @@
 	</head>
 	<body>
     <h1>Sporz</h1>
+	<?php
+	foreach ($this->flushFlash() as $flash) {
+		?>
+		<div class="alert alert-<?= $flash['class']; ?>">
+			<?= $flash['message']; ?>
+		</div>
+		<?php
+	}
+	?>
     <ul class="nav nav-tabs">
         <li role="presentation">
             <a href="/">Home</a>

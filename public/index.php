@@ -10,9 +10,17 @@ use App\Models\Game;
 
 use App\Helpers\Redirect;
 
+session_start();
+
 $view = View::getInstance();
 $view->set_tpl_path(APP_PATH.'/Views/');
 $view->setLayout('layout.tpl.php');
+
+if (!isset($_SESSION['view']['flash-messages'])) {
+	$_SESSION['view']['flash-messages'] = array();
+}
+
+$view->initFlashStructure($_SESSION['view']['flash-messages']);
 
 $app = Router::getInstance();
 
