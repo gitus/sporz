@@ -21,6 +21,9 @@
             <a href="/">Home</a>
         </li>
         <li role="presentation">
+            <a href="/login">Sign in</a>
+        </li>
+        <li role="presentation">
             <a href="/game/add">Create Game</a>
         </li>
     </ul>
