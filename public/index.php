@@ -62,10 +62,10 @@ $app->group('/login', function () use ($app) {
             Redirect::to($app->url_for('login-form'));
         }
 
-        $player = player::forge()->where('name', 'LIKE', $name)->first();
+        $player = Player::forge()->where('name', 'LIKE', $name)->first();
 
         if (!$player) {
-            $player = new player();
+            $player = new Player();
             $player->name = $name;
 
             $token = $player->token = Security::generateToken();
