@@ -6,15 +6,25 @@ require_once '../config/config.php'; // config APP
 use Pragma\View\View;
 use Pragma\Router\Router;
 
+use App\Models\Player;
 use App\Models\Game;
 
 use App\Helpers\Redirect;
+use App\Helpers\Security;
 
 session_start();
 
 $view = View::getInstance();
 $view->set_tpl_path(APP_PATH.'/Views/');
 $view->setLayout('layout.tpl.php');
+
+if (empty($_SESSION['auth'])) {
+    $_SESSION['auth'] = array(
+        'userid'    => null,
+        'username'  => null,
+        'token'     => null
+    );
+}
 
 if (!isset($_SESSION['view']['flash-messages'])) {
 	$_SESSION['view']['flash-messages'] = array();
@@ -30,27 +40,52 @@ $app->get('/', function () use ($app) {
     View::getInstance()->assign('joinableGames', Game::getNonStartedGame());
     View::getInstance()->assign('router', $app);
     View::getInstance()->render('index.tpl.php');
+})->alias('index');
+
+$app->group('/login', function () use ($app) {
+    $app->get('', function () use ($app) {
+        $view = view::getinstance();
+
+        $view->assign('username',   $_SESSION['auth']['username']);
+        $view->assign('token',      $_SESSION['auth']['token']);
+
+        $view->assign('form-action', $app->url_for('login-post'));
+
+        $view->render('session/login-form.tpl.php');
+    })->alias('login-form');
+    $app->post('', function() use ($app) {
+        $name   = filter_input(INPUT_POST, 'name',  FILTER_SANITIZE_STRING);
+        $token  = filter_input(INPUT_POST, 'token', FILTER_SANITIZE_STRING);
+
+        if ($name == null) {
+            View::getInstance()->flash('User name empty', 'danger');
+            Redirect::to($app->url_for('login-form'));
+        }
+
+        $player = Player::forge()->where('name', 'LIKE', $name)->first();
+
+        if (!$player) {
+            $player = new Player();
+            $player->name = $name;
+
+            $token = $player->token = Security::generateToken();
+        }
+
+        if (!Security::slowCompare($token, $player->token)) {
+            View::getInstance()->flash('Password mismatch', 'danger');
+            Redirect::to($app->url_for('index'));
+        }
+
+        $player->save();
+
+        $_SESSION['auth']['userid']     = $player->id;
+        $_SESSION['auth']['username']   = $player->name;
+        $_SESSION['auth']['token']      = $player->token;
+
+        View::getInstance()->flash('Successfully logged in', 'success');
+        Redirect::to($app->url_for('index'));
+    })->alias('login-post');
 });
-
-$app->get('/login', function () use ($app) {
-	$view = View::getInstance();
-
-    $view->assign('form-action', $app->url_for('login-post'));
-
-	$view->render('session/login-form.tpl.php');
-})->alias('login-form');
-
-$app->post('/login', function() use ($app) {
-	$email = filter_input(INPUT_POST, 'email', FILTER_VALIDATE_EMAIL);
-
-	if ($email == null) {
-		View::getInstance()->flash('Invalid email address', 'danger');
-        Redirect::to($app->url_for('login-form'));
-	}
-
-	// TODO: Find use by email (or create?) & send authentication link to address
-	//$player = player::forge()->where('started', '=', 0)->get_objects();
-})->alias('login-post');
 
 $app->group('/game', function () use ($app) {
     $app->post('', function () use ($app) {
@@ -109,6 +144,21 @@ $app->group('/game', function () use ($app) {
 
             Redirect::to($app->url_for('game-detail', ['gameid' => $game->id]));
         })->alias('game-save');
+        $app->group('', Security::checkAuthentification($app), function () use ($app) {
+            // User is signed in, we can open the corresponding objet if necessary
+            $userId = $_SESSION['auth']['userid'];
+
+            // $app->get('/secret', function ($gameId) use ($userId) {
+            //     $game = new Game();
+            //     $game->open($gameId);
+
+            //     $player = new Player();
+            //     $player->open($userId);
+
+            //     var_dump($game);
+            //     var_dump($player);
+            // });
+        });
     });
 });
 
