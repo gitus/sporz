@@ -9,6 +9,7 @@ use Pragma\Router\Router;
 use App\Models\Game;
 
 use App\Helpers\Redirect;
+use App\Helpers\Security;
 
 session_start();
 
