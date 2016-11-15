@@ -68,8 +68,7 @@ $app->group('/login', function () use ($app) {
             $player = new player();
             $player->name = $name;
 
-            // FIXME: should use stronger random function / UUID
-            $token = $player->token = uniqid();
+            $token = $player->token = Security::generateToken();
         }
 
         if (!Security::slowCompare($token, $player->token)) {

@@ -13,4 +13,14 @@ class Security
          }
          return $diff === 0;
     }
+
+    public static function generateToken()
+    {
+        $str = '23456789ABCDEFGHJKLMNPQRSTUVWXYZ';
+        $arr = str_split($str);
+
+        shuffle($arr);
+
+        return substr(implode($arr), 0, 5);
+    }
 }
