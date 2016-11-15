@@ -16,10 +16,9 @@ class Player extends \Pragma\ORM\Model
     private $mutated;
     private $alive;
 
-    public function __construct($name)
+    public function __construct()
     {
         return parent::__construct('player');
-        $this->name = $name;
     }
 
     public function setGenome($genome)
