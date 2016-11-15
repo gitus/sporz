@@ -144,6 +144,21 @@ $app->group('/game', function () use ($app) {
 
             Redirect::to($app->url_for('game-detail', ['gameid' => $game->id]));
         })->alias('game-save');
+        $app->group('', Security::checkAuthentification($app), function () use ($app) {
+            // User is signed in, we can open the corresponding objet if necessary
+            $userId = $_SESSION['auth']['userid'];
+
+            // $app->get('/secret', function ($gameId) use ($userId) {
+            //     $game = new Game();
+            //     $game->open($gameId);
+
+            //     $player = new Player();
+            //     $player->open($userId);
+
+            //     var_dump($game);
+            //     var_dump($player);
+            // });
+        });
     });
 });
 
