@@ -10,9 +10,17 @@ use App\Models\Game;
 
 use App\Helpers\Redirect;
 
+session_start();
+
 $view = View::getInstance();
 $view->set_tpl_path(APP_PATH.'/Views/');
 $view->setLayout('layout.tpl.php');
+
+if (!isset($_SESSION['view']['flash-messages'])) {
+	$_SESSION['view']['flash-messages'] = array();
+}
+
+$view->initFlashStructure($_SESSION['view']['flash-messages']);
 
 $app = Router::getInstance();
 
@@ -23,6 +31,26 @@ $app->get('/', function () use ($app) {
     View::getInstance()->assign('router', $app);
     View::getInstance()->render('index.tpl.php');
 });
+
+$app->get('/login', function () use ($app) {
+	$view = View::getInstance();
+
+    $view->assign('form-action', $app->url_for('login-post'));
+
+	$view->render('session/login-form.tpl.php');
+})->alias('login-form');
+
+$app->post('/login', function() use ($app) {
+	$email = filter_input(INPUT_POST, 'email', FILTER_VALIDATE_EMAIL);
+
+	if ($email == null) {
+		View::getInstance()->flash('Invalid email address', 'danger');
+        Redirect::to($app->url_for('login-form'));
+	}
+
+	// TODO: Find use by email (or create?) & send authentication link to address
+	//$player = player::forge()->where('started', '=', 0)->get_objects();
+})->alias('login-post');
 
 $app->group('/game', function () use ($app) {
     $app->post('', function () use ($app) {
