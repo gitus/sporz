@@ -144,7 +144,7 @@ $app->group('/game', function () use ($app) {
 
             Redirect::to($app->url_for('game-detail', ['gameid' => $game->id]));
         })->alias('game-save');
-        $app->group('', Security::checkAuthentification($app), function () use ($app) {
+        $app->group('', Security::requireAuthentication($app), function () use ($app) {
             // User is signed in, we can open the corresponding objet if necessary
             $userId = $_SESSION['auth']['userid'];
 

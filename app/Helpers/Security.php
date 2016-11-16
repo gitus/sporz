@@ -24,7 +24,7 @@ class Security
         return substr(implode($arr), 0, 5);
     }
 
-    public static function checkAuthentification(\Pragma\Router\Router $app)
+    public static function requireAuthentication(\Pragma\Router\Router $app)
     {
         return function () use ($app) {
             if (empty($_SESSION['auth'])) {
