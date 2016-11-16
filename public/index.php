@@ -185,5 +185,9 @@ try {
     $app->run();
     $view->compute();
 } catch (Pragma\Router\RouterException $e) {
+    if ($e->getCode() == Pragma\Router\RouterException::NO_ROUTE_CODE) {
+        Redirect::to($app->url_for('index'));
+    }
+
     var_dump($e);
 }
