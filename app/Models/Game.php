@@ -88,14 +88,15 @@ class Game extends \Pragma\ORM\Model
         if (count($this->players) < 7) {
             return false;
         }
+
         shuffle($this->players);
 
         $bad_guy = array_shift($this->players);
-        $bad_guy->mutate();
         $bad_guy->setGenome(Player::GENOME_HOST);
+        $bad_guy->mutate();
 
         $first_doc = array_shift($this->players);
-        $fist_doc->role = 'medic';
+        $first_doc->role = 'medic';
 
         $second_doc = array_shift($this->players);
         $second_doc->role = 'medic';
@@ -104,20 +105,25 @@ class Game extends \Pragma\ORM\Model
         $this->players[$index_of_modified_genomes[0]]->setGenome(Player::GENOME_HOST);
         $this->players[$index_of_modified_genomes[1]]->setGenome(Player::GENOME_RESISTANT);
 
-        array_push($this->players, $bad_guy, $first_doc, $second_doc);
+        $this->players[] = $bad_guy;
+        $this->players[] = $first_doc;
+        $this->players[] = $second_doc;
 
         $some_guy = array_shift($this->players);
         $some_guy->role = 'psy';
-        array_push($this->players, $some_guy);
+        $this->players[] = $some_guy;
+
         $some_guy = array_shift($this->players);
         $some_guy->role = 'geneticist';
-        array_push($this->players, $some_guy);
+        $this->players[] = $some_guy;
+
         $some_guy = array_shift($this->players);
         $some_guy->role = 'it';
-        array_push($this->players, $some_guy);
+        $this->players[] = $some_guy;
+
         $some_guy = array_shift($this->players);
         $some_guy->role = 'hacker';
-        array_push($this->players, $some_guy);
+        $this->players[] = $some_guy;
 
         return true;
     }
