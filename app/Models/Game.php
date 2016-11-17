@@ -7,7 +7,7 @@ class Game extends \Pragma\ORM\Model
     const PHASE_DAY     = 0;
     const PHASE_NIGHT   = 1;
 
-    private $players;
+    public $players;
 
     public function __construct()
     {
