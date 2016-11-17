@@ -63,6 +63,7 @@ class Game extends \Pragma\ORM\Model
 
         return null;
     }
+
     public function getPlayerByName($name)
     {
         foreach ($this->players as $player) {

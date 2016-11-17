@@ -27,7 +27,7 @@ if (empty($_SESSION['auth'])) {
 }
 
 if (!isset($_SESSION['view']['flash-messages'])) {
-	$_SESSION['view']['flash-messages'] = array();
+    $_SESSION['view']['flash-messages'] = array();
 }
 
 $view->initFlashStructure($_SESSION['view']['flash-messages']);
