@@ -33,6 +33,17 @@ $view->set_tpl_path(APP_PATH.'/Views/');
 $view->setLayout('layout.tpl.php');
 $view->initFlashStructure($_SESSION['view']['flash-messages']);
 
+/* Global view variable */
+if ($_SESSION['auth']['userid'] == null) {
+    $view->assign('userid',     null);
+    $view->assign('username',   null);
+    $view->assign('usertoken',  null);
+} else {
+    $view->assign('userid',     $_SESSION['auth']['userid']);
+    $view->assign('username',   $_SESSION['auth']['username']);
+    $view->assign('usertoken',  $_SESSION['auth']['token']);
+}
+
 /* Get application router & start route definitions */
 $app = Router::getInstance();
 
