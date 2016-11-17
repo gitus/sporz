@@ -58,9 +58,6 @@ $app->group('/login', function () use ($app) {
     $app->get('', function () use ($app) {
         $view = view::getinstance();
 
-        $view->assign('username',   $_SESSION['auth']['username']);
-        $view->assign('token',      $_SESSION['auth']['token']);
-
         $view->assign('form-action', $app->url_for('login-post'));
 
         $view->render('session/login-form.tpl.php');
