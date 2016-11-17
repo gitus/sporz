@@ -14,10 +14,7 @@ use App\Helpers\Security;
 
 session_start();
 
-$view = View::getInstance();
-$view->set_tpl_path(APP_PATH.'/Views/');
-$view->setLayout('layout.tpl.php');
-
+/* Init global session structure */
 if (empty($_SESSION['auth'])) {
     $_SESSION['auth'] = array(
         'userid'    => null,
@@ -30,11 +27,15 @@ if (!isset($_SESSION['view']['flash-messages'])) {
     $_SESSION['view']['flash-messages'] = array();
 }
 
+/* View configuration */
+$view = View::getInstance();
+$view->set_tpl_path(APP_PATH.'/Views/');
+$view->setLayout('layout.tpl.php');
 $view->initFlashStructure($_SESSION['view']['flash-messages']);
 
+/* Get application router & start route definitions */
 $app = Router::getInstance();
 
-//define your routes here
 $app->get('/', function () use ($app) {
     //HOME PAGE
     View::getInstance()->assign('joinableGames', Game::getNonStartedGame());
@@ -224,6 +225,7 @@ $app->post('/joinGame', function () {
     //si possible de créer un joueur avec POST[name] alors joinGame et redirige vers /:keyId
 });
 
+/* Start main loop - catch exception if any */
 try {
     $app->run();
     $view->compute();
