@@ -170,7 +170,6 @@ $app->group('/game', function () use ($app) {
                     Redirect::to($app->url_for('index'));
                 }
 
-                $game->startGame();
                 Redirect::to($app->url_for('game-dashboard', ['gameid' => $game->id]));
             });
             $app->get('/dashboard', function ($gameId) use ($userId) {
