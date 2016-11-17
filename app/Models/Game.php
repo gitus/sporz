@@ -8,10 +8,6 @@ class Game extends \Pragma\ORM\Model
     const PHASE_NIGHT   = 1;
 
     private $players;
-    private $id;
-    private $started;
-    private $phase;
-    private $leader;
 
     public function __construct()
     {
