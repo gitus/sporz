@@ -158,7 +158,7 @@ $app->group('/game', function () use ($app) {
             // User is signed in, we can open the corresponding objet if necessary
             $userId = $_SESSION['auth']['userid'];
 
-            $app->get('/join', function ($gameId) use ($userId) {
+            $app->get('/join', function ($gameId) use ($app, $userId) {
                 $game = new Game();
                 $game->open($gameId);
 
@@ -182,7 +182,7 @@ $app->group('/game', function () use ($app) {
 
                 Redirect::to($app->url_for('game-dashboard', ['gameid' => $game->id]));
             })->alias('game-join');
-            $app->get('/dashboard', function ($gameId) use ($userId) {
+            $app->get('/dashboard', function ($gameId) use ($app, $userId) {
                 $game = new Game();
                 $game->open($gameId);
 
