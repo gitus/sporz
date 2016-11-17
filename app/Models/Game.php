@@ -24,16 +24,26 @@ class Game extends \Pragma\ORM\Model
         //TODO
     }
 
-    public function addPlayer($name)
+    public function addPlayer(Player $player)
     {
-        $keyId = null;
-        if (!($this->started) && getPlayerByName($name) == null) {
-            $new_player = new Player($name);
-            $keyId = $new_player->getKeyId();
-            array_push($this->players, $new_player);
-        }
+	    if ($player == null) {
+		    return false;
+		}
 
-        return $keyId;
+		if ($this->started) {
+			return false;
+		}
+
+		if ($this->getPlayerByName($player->name)) {
+			return false;
+		}
+
+		$player->game_id = $this->id;
+		$player->save();
+
+        $this->players[] = $player;
+
+        return true;
     }
 
     public function getPlayerByRole($role)
