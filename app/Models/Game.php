@@ -18,6 +18,15 @@ class Game extends \Pragma\ORM\Model
         return parent::__construct('game');
     }
 
+    public function open($gameId)
+    {
+        $ret = parent::open($gameId);
+
+        $this->players = Player::forge()->where('game_id', '=', $this->id)->get_objects();
+
+        return $ret;
+    }
+
     //the KeyId is the string used by a player in order to authenticate in-game (security is not a concern here)
     public static function genKeyId()
     {
