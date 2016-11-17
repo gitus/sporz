@@ -127,6 +127,7 @@ $app->group('/game', function () use ($app) {
             $view->assign('game', $game);
 
             $view->assign('edit-link', $app->url_for('game-edit', ['gameid' => $game->id]));
+            $view->assign('join-link', $app->url_for('game-join', ['gameid' => $game->id]));
 
             $view->render('game/detail.tpl.php');
         })->alias('game-detail');
@@ -180,7 +181,7 @@ $app->group('/game', function () use ($app) {
                 }
 
                 Redirect::to($app->url_for('game-dashboard', ['gameid' => $game->id]));
-            });
+            })->alias('game-join');
             $app->get('/dashboard', function ($gameId) use ($userId) {
                 $game = new Game();
                 $game->open($gameId);
