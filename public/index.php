@@ -148,6 +148,50 @@ $app->group('/game', function () use ($app) {
             // User is signed in, we can open the corresponding objet if necessary
             $userId = $_SESSION['auth']['userid'];
 
+            $app->get('/join', function ($gameId) use ($userId) {
+                $game = new Game();
+                $game->open($gameId);
+
+                if ($game == null) {
+                    View::getInstance()->flash('Inexistent game', 'danger');
+                    Redirect::to($app->url_for('index'));
+                }
+
+                $player = new Player();
+                $player->open($userId);
+
+                if ($player == null) {
+                    View::getInstance()->flash('Inexistent player', 'danger');
+                    Redirect::to($app->url_for('index'));
+                }
+
+                if (!$game->addPlayer($player)) {
+                    View::getInstance()->flash('Can not join game', 'danger');
+                    Redirect::to($app->url_for('index'));
+                }
+
+                $game->startGame();
+                Redirect::to($app->url_for('game-dashboard', ['gameid' => $game->id]));
+            });
+            $app->get('/dashboard', function ($gameId) use ($userId) {
+                $game = new Game();
+                $game->open($gameId);
+
+                if ($game == null) {
+                    View::getInstance()->flash('Inexistent game', 'danger');
+                    Redirect::to($app->url_for('index'));
+                }
+
+                $player = new Player();
+                $player->open($userId);
+
+                if ($player == null) {
+                    View::getInstance()->flash('Inexistent player', 'danger');
+                    Redirect::to($app->url_for('index'));
+                }
+
+                // TODO: Main view - game data sum up - ajax refreshing - web stuff
+            })->alias('game-dashboard');
             // $app->get('/secret', function ($gameId) use ($userId) {
             //     $game = new Game();
             //     $game->open($gameId);
