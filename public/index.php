@@ -175,7 +175,7 @@ $app->group('/game', function () use ($app) {
                     Redirect::to($app->url_for('index'));
                 }
 
-                if (!$game->addPlayer($player)) {
+                if (!$game->isAttached($player) && !$game->addPlayer($player)) {
                     View::getInstance()->flash('Can not join game', 'danger');
                     Redirect::to($app->url_for('index'));
                 }

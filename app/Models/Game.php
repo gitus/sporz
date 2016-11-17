@@ -80,6 +80,17 @@ class Game extends \Pragma\ORM\Model
         return null;
     }
 
+    public function isAttached(Player $player)
+    {
+        foreach ($this->players as $attachedPlayer) {
+            if ($player->is == $attachedPlayer) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     public function startGame()
     {
         if (count($this->players) >= 7) {
