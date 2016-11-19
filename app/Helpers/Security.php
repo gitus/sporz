@@ -24,28 +24,22 @@ class Security
         return substr(implode($arr), 0, 5);
     }
 
-    public static function checkAuthentification(\Pragma\Router\Router $app)
+    public static function requireAuthentication(\Pragma\Router\Router $app)
     {
         return function () use ($app) {
-            if (empty($_SESSION['auth'])) {
-                unset($_SESSION['auth']);
-                Redirect::to($app->url_for('login-form'));
-            }
-
-            if (empty($_SESSION['auth']['userid'])) {
-                unset($_SESSION['auth']);
-                Redirect::to($app->url_for('login-form'));
-            }
-
-            if (empty($_SESSION['auth']['username'])) {
-                unset($_SESSION['auth']);
-                Redirect::to($app->url_for('login-form'));
-            }
-
-            if (empty($_SESSION['auth']['token'])) {
+            if (!self::checkAuthentication()) {
                 unset($_SESSION['auth']);
                 Redirect::to($app->url_for('login-form'));
             }
         };
+    }
+
+    public static function checkAuthentication()
+    {
+        return !(empty($_SESSION['auth'])
+            || empty($_SESSION['auth']['userid'])
+            || empty($_SESSION['auth']['username'])
+            || empty($_SESSION['auth']['token'])
+        );
     }
 }

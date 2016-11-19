@@ -7,15 +7,20 @@ class Game extends \Pragma\ORM\Model
     const PHASE_DAY     = 0;
     const PHASE_NIGHT   = 1;
 
-    private $players;
-    private $id;
-    private $started;
-    private $phase;
-    private $leader;
+    public $players;
 
     public function __construct()
     {
         return parent::__construct('game');
+    }
+
+    public function open($gameId)
+    {
+        $ret = parent::open($gameId);
+
+        $this->players = Player::forge()->where('game_id', '=', $this->id)->get_objects();
+
+        return $ret;
     }
 
     //the KeyId is the string used by a player in order to authenticate in-game (security is not a concern here)
@@ -24,16 +29,26 @@ class Game extends \Pragma\ORM\Model
         //TODO
     }
 
-    public function addPlayer($name)
+    public function addPlayer(Player $player)
     {
-        $keyId = null;
-        if (!($this->started) && getPlayerByName($name) == null) {
-            $new_player = new Player($name);
-            $keyId = $new_player->getKeyId();
-            array_push($this->players, $new_player);
-        }
+	    if ($player == null) {
+		    return false;
+		}
 
-        return $keyId;
+		if ($this->started) {
+			return false;
+		}
+
+		if ($this->getPlayerByName($player->name)) {
+			return false;
+		}
+
+		$player->game_id = $this->id;
+		$player->save();
+
+        $this->players[] = $player;
+
+        return true;
     }
 
     public function getPlayerByRole($role)
@@ -53,6 +68,7 @@ class Game extends \Pragma\ORM\Model
 
         return null;
     }
+
     public function getPlayerByName($name)
     {
         foreach ($this->players as $player) {
@@ -64,11 +80,23 @@ class Game extends \Pragma\ORM\Model
         return null;
     }
 
+    public function isAttached(Player $player)
+    {
+        foreach ($this->players as $attachedPlayer) {
+            if ($player->is == $attachedPlayer) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     public function startGame()
     {
         if (count($this->players) >= 7) {
             $this->started = 1;
             $this->initGame();
+            $this->save();
         }
     }
 
@@ -77,14 +105,15 @@ class Game extends \Pragma\ORM\Model
         if (count($this->players) < 7) {
             return false;
         }
+
         shuffle($this->players);
 
         $bad_guy = array_shift($this->players);
-        $bad_guy->mutate();
         $bad_guy->setGenome(Player::GENOME_HOST);
+        $bad_guy->mutate();
 
         $first_doc = array_shift($this->players);
-        $fist_doc->role = 'medic';
+        $first_doc->role = 'medic';
 
         $second_doc = array_shift($this->players);
         $second_doc->role = 'medic';
@@ -93,20 +122,25 @@ class Game extends \Pragma\ORM\Model
         $this->players[$index_of_modified_genomes[0]]->setGenome(Player::GENOME_HOST);
         $this->players[$index_of_modified_genomes[1]]->setGenome(Player::GENOME_RESISTANT);
 
-        array_push($this->players, $bad_guy, $first_doc, $second_doc);
+        $this->players[] = $bad_guy;
+        $this->players[] = $first_doc;
+        $this->players[] = $second_doc;
 
         $some_guy = array_shift($this->players);
         $some_guy->role = 'psy';
-        array_push($this->players, $some_guy);
+        $this->players[] = $some_guy;
+
         $some_guy = array_shift($this->players);
         $some_guy->role = 'geneticist';
-        array_push($this->players, $some_guy);
+        $this->players[] = $some_guy;
+
         $some_guy = array_shift($this->players);
         $some_guy->role = 'it';
-        array_push($this->players, $some_guy);
+        $this->players[] = $some_guy;
+
         $some_guy = array_shift($this->players);
         $some_guy->role = 'hacker';
-        array_push($this->players, $some_guy);
+        $this->players[] = $some_guy;
 
         return true;
     }

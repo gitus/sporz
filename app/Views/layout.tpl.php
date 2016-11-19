@@ -7,6 +7,13 @@
 	</head>
 	<body>
     <h1>Sporz</h1>
+    <?php
+    if ($this->get('username') != null) {
+        ?>
+        <p>Hello, <?= $this->get('username'); ?>!</p>
+        <?php
+    }
+    ?>
 	<?php
 	foreach ($this->flushFlash() as $flash) {
 		?>

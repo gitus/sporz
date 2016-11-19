@@ -14,10 +14,7 @@ use App\Helpers\Security;
 
 session_start();
 
-$view = View::getInstance();
-$view->set_tpl_path(APP_PATH.'/Views/');
-$view->setLayout('layout.tpl.php');
-
+/* Init global session structure */
 if (empty($_SESSION['auth'])) {
     $_SESSION['auth'] = array(
         'userid'    => null,
@@ -27,14 +24,29 @@ if (empty($_SESSION['auth'])) {
 }
 
 if (!isset($_SESSION['view']['flash-messages'])) {
-	$_SESSION['view']['flash-messages'] = array();
+    $_SESSION['view']['flash-messages'] = array();
 }
 
+/* View configuration */
+$view = View::getInstance();
+$view->set_tpl_path(APP_PATH.'/Views/');
+$view->setLayout('layout.tpl.php');
 $view->initFlashStructure($_SESSION['view']['flash-messages']);
 
+/* Global view variable */
+if ($_SESSION['auth']['userid'] == null) {
+    $view->assign('userid',     null);
+    $view->assign('username',   null);
+    $view->assign('usertoken',  null);
+} else {
+    $view->assign('userid',     $_SESSION['auth']['userid']);
+    $view->assign('username',   $_SESSION['auth']['username']);
+    $view->assign('usertoken',  $_SESSION['auth']['token']);
+}
+
+/* Get application router & start route definitions */
 $app = Router::getInstance();
 
-//define your routes here
 $app->get('/', function () use ($app) {
     //HOME PAGE
     View::getInstance()->assign('joinableGames', Game::getNonStartedGame());
@@ -45,9 +57,6 @@ $app->get('/', function () use ($app) {
 $app->group('/login', function () use ($app) {
     $app->get('', function () use ($app) {
         $view = view::getinstance();
-
-        $view->assign('username',   $_SESSION['auth']['username']);
-        $view->assign('token',      $_SESSION['auth']['token']);
 
         $view->assign('form-action', $app->url_for('login-post'));
 
@@ -118,6 +127,7 @@ $app->group('/game', function () use ($app) {
             $view->assign('game', $game);
 
             $view->assign('edit-link', $app->url_for('game-edit', ['gameid' => $game->id]));
+            $view->assign('join-link', $app->url_for('game-join', ['gameid' => $game->id]));
 
             $view->render('game/detail.tpl.php');
         })->alias('game-detail');
@@ -144,10 +154,53 @@ $app->group('/game', function () use ($app) {
 
             Redirect::to($app->url_for('game-detail', ['gameid' => $game->id]));
         })->alias('game-save');
-        $app->group('', Security::checkAuthentification($app), function () use ($app) {
+        $app->group('', Security::requireAuthentication($app), function () use ($app) {
             // User is signed in, we can open the corresponding objet if necessary
             $userId = $_SESSION['auth']['userid'];
 
+            $app->get('/join', function ($gameId) use ($app, $userId) {
+                $game = new Game();
+                $game->open($gameId);
+
+                if ($game == null) {
+                    View::getInstance()->flash('Inexistent game', 'danger');
+                    Redirect::to($app->url_for('index'));
+                }
+
+                $player = new Player();
+                $player->open($userId);
+
+                if ($player == null) {
+                    View::getInstance()->flash('Inexistent player', 'danger');
+                    Redirect::to($app->url_for('index'));
+                }
+
+                if (!$game->isAttached($player) && !$game->addPlayer($player)) {
+                    View::getInstance()->flash('Can not join game', 'danger');
+                    Redirect::to($app->url_for('index'));
+                }
+
+                Redirect::to($app->url_for('game-dashboard', ['gameid' => $game->id]));
+            })->alias('game-join');
+            $app->get('/dashboard', function ($gameId) use ($app, $userId) {
+                $game = new Game();
+                $game->open($gameId);
+
+                if ($game == null) {
+                    View::getInstance()->flash('Inexistent game', 'danger');
+                    Redirect::to($app->url_for('index'));
+                }
+
+                $player = new Player();
+                $player->open($userId);
+
+                if ($player == null) {
+                    View::getInstance()->flash('Inexistent player', 'danger');
+                    Redirect::to($app->url_for('index'));
+                }
+
+                // TODO: Main view - game data sum up - ajax refreshing - web stuff
+            })->alias('game-dashboard');
             // $app->get('/secret', function ($gameId) use ($userId) {
             //     $game = new Game();
             //     $game->open($gameId);
@@ -181,9 +234,14 @@ $app->post('/joinGame', function () {
     //si possible de créer un joueur avec POST[name] alors joinGame et redirige vers /:keyId
 });
 
+/* Start main loop - catch exception if any */
 try {
     $app->run();
     $view->compute();
 } catch (Pragma\Router\RouterException $e) {
+    if ($e->getCode() == Pragma\Router\RouterException::NO_ROUTE_CODE) {
+        Redirect::to($app->url_for('index'));
+    }
+
     var_dump($e);
 }
