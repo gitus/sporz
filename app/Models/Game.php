@@ -83,7 +83,7 @@ class Game extends \Pragma\ORM\Model
     public function isAttached(Player $player)
     {
         foreach ($this->players as $attachedPlayer) {
-            if ($player->is == $attachedPlayer) {
+            if ($player->id == $attachedPlayer->id) {
                 return true;
             }
         }
