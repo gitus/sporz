@@ -128,6 +128,7 @@ $app->group('/game', function () use ($app) {
 
             $view->assign('edit-link', $app->url_for('game-edit', ['gameid' => $game->id]));
             $view->assign('join-link', $app->url_for('game-join', ['gameid' => $game->id]));
+            $view->assign('startgame-link', $app->url_for('game-start', ['gameid' => $game->id]));
 
             $view->render('game/detail.tpl.php');
         })->alias('game-detail');
@@ -182,6 +183,37 @@ $app->group('/game', function () use ($app) {
 
                 Redirect::to($app->url_for('game-dashboard', ['gameid' => $game->id]));
             })->alias('game-join');
+        $app->get('/start', function ($gameId) use ($app, $userId) {
+            $view = View::getInstance();
+
+                $game = new Game();
+                $game->open($gameId);
+
+                if ($game == null) {
+                    View::getInstance()->flash('Inexistent game', 'danger');
+                    Redirect::to($app->url_for('index'));
+                }
+
+                $player = new Player();
+                $player->open($userId);
+
+                if ($player == null) {
+                    View::getInstance()->flash('Inexistent player', 'danger');
+                    Redirect::to($app->url_for('index'));
+                }
+
+                if ($game->started) {
+                    View::getInstance()->flash('Game is already started', 'danger');
+                    Redirect::to($app->url_for('index'));
+                }
+
+		    if($game->isAttached($player) && $game->startGame()){
+			    View::getInstance()->flash('Game has started', 'success');
+				Redirect::to($app->url_for('game-dashboard', ['gameid' => $game->id]));
+		    }
+	    View::getInstance()->flash('Cannot start game', 'danger');
+	    Redirect::to($app->url_for('game-detail',['gameid' => $game->id]));
+        })->alias('game-start');
             $app->get('/dashboard', function ($gameId) use ($app, $userId) {
                 $game = new Game();
                 $game->open($gameId);

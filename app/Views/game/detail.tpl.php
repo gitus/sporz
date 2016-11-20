@@ -4,6 +4,7 @@
 if ($this->get('userid') != null) {
     ?>
     <a href="<?= $this->get('join-link'); ?>">Join</a>
+    <a href="<?= $this->get('startgame-link'); ?>">Start</a>
     <?php
 }
 ?>
