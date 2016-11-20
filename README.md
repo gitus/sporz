@@ -8,6 +8,6 @@ PHP implementation of the board game "sporz"
 * Clone this repository
 * In the root directory:
 
-	$ make all
-	$ # edit config/config.php to suits your needs
-	$ make migration
+        $ make all
+        $ # edit config/config.php to suits your needs
+        $ make migration
