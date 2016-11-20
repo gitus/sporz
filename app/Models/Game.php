@@ -97,7 +97,9 @@ class Game extends \Pragma\ORM\Model
             $this->started = 1;
             $this->initGame();
             $this->save();
+            return true;
         }
+    return false;
     }
 
     public function initGame()
