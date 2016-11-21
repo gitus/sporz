@@ -4,8 +4,15 @@ namespace App\Models;
 
 class Game extends \Pragma\ORM\Model
 {
-    const PHASE_DAY     = 0;
-    const PHASE_NIGHT   = 1;
+    const PHASE_DAY_ELECT_LEADER     = 0;
+    const PHASE_DAY_VOTE_TO_KILL   = 1;
+    const PHASE_NIGHT_MUTANT_MUTE_OR_KILL   = 2;
+    const PHASE_NIGHT_MUTANT_PARALYSE   = 3;
+    const PHASE_NIGHT_MEDIC   = 4;
+    const PHASE_NIGHT_PSYCHO   = 5;
+    const PHASE_NIGHT_GENETIC   = 6;
+    const PHASE_NIGHT_IT   = 7;
+    const PHASE_NIGHT_HACKER   = 8;
 
     public $players;
 
