@@ -8,14 +8,6 @@ class Player extends \Pragma\ORM\Model
     const GENOME_NORMAL     = 1;
     const GENOME_RESISTANT  = 2;
 
-    private $name;
-    private $keyId;
-    private $genome;
-    private $role;
-    private $paralysed;
-    private $mutated;
-    private $alive;
-
     public function __construct()
     {
         return parent::__construct('player');

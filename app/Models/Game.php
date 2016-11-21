@@ -145,6 +145,10 @@ class Game extends \Pragma\ORM\Model
         $some_guy->role = 'hacker';
         $this->players[] = $some_guy;
 
+        foreach ($this->players as $player) {
+		$player->save();
+	}
+
         return true;
     }
 
