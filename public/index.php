@@ -267,25 +267,6 @@ $app->group('/game', function () use ($app) {
     });
 });
 
-$app->get('/:keyId', function () {
-    //si keyId existe, displayGame
-    //$player=new Player();
-    //$player->open("keyId");
-    //$game=new Game();
-    //$game=open($player->game_id);
-    //en fonction de $game->phase, $template=xyz
-    //View::getInstance()->render($template);
-});
-$app->post('/:keyId/cure', function () {
-    //si $game->phase dit que c'est aux médecins de jouer et que $player->role=="medic" alors getPlayer($POST[name])->cure() et $game->nextPhase();
-});
-$app->post('/createGame', function () {
-    //si possible de créer un joueur avec POST[name] alors créer une partie et rediriger vers /:keyId
-});
-$app->post('/joinGame', function () {
-    //si possible de créer un joueur avec POST[name] alors joinGame et redirige vers /:keyId
-});
-
 /* Start main loop - catch exception if any */
 try {
     $app->run();
