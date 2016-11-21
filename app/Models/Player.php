@@ -8,6 +8,14 @@ class Player extends \Pragma\ORM\Model
     const GENOME_NORMAL     = 1;
     const GENOME_RESISTANT  = 2;
 
+    const ROLE_ASTRONAUT  = 0;
+    const ROLE_MEDIC  = 1;
+    const ROLE_PSYCHO  = 2;
+    const ROLE_GENETIC  = 3;
+    const ROLE_HACKER  = 4;
+    const ROLE_IT  = 5;
+    const ROLE_SPY  = 6;
+
     public function __construct()
     {
         return parent::__construct('player');
@@ -20,6 +28,15 @@ class Player extends \Pragma\ORM\Model
         }
 
         $this->genome = $genome;
+    }
+
+    public function setRole($role)
+    {
+        if (!in_array($role, [self::ROLE_ASTRONAUT, self::ROLE_MEDIC, self::ROLE_PSYCHO,self::ROLE_GENETIC, self::ROLE_HACKER, self::ROLE_IT,self::ROLE_SPY])) {
+            $role = self::ROLE_ASTRONAUT;
+        }
+
+        $this->role = $role;
     }
 
     public function mutate()

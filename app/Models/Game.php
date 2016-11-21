@@ -116,10 +116,10 @@ class Game extends \Pragma\ORM\Model
         $bad_guy->mutate();
 
         $first_doc = array_shift($this->players);
-        $first_doc->role = 'medic';
+        $first_doc->setRole(Player::ROLE_MEDIC);
 
         $second_doc = array_shift($this->players);
-        $second_doc->role = 'medic';
+        $second_doc->setRole(Player::ROLE_MEDIC);
 
         $index_of_modified_genomes = array_rand($this->players, 2);
         $this->players[$index_of_modified_genomes[0]]->setGenome(Player::GENOME_HOST);
@@ -130,19 +130,19 @@ class Game extends \Pragma\ORM\Model
         $this->players[] = $second_doc;
 
         $some_guy = array_shift($this->players);
-        $some_guy->role = 'psy';
+        $some_guy->setRole(Player::ROLE_PSYCHO);
         $this->players[] = $some_guy;
 
         $some_guy = array_shift($this->players);
-        $some_guy->role = 'geneticist';
+        $some_guy->setRole(Player::ROLE_GENETIC);
         $this->players[] = $some_guy;
 
         $some_guy = array_shift($this->players);
-        $some_guy->role = 'it';
+        $some_guy->setRole(Player::ROLE_HACKER);
         $this->players[] = $some_guy;
 
         $some_guy = array_shift($this->players);
-        $some_guy->role = 'hacker';
+        $some_guy->setRole(Player::ROLE_IT);
         $this->players[] = $some_guy;
 
         foreach ($this->players as $player) {
