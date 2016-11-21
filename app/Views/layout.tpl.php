@@ -3,20 +3,9 @@
 	<head>
 		<meta charset="utf-8">
 		<title>Sporz</title>
-        <link href="/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+		<link href="/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 	</head>
 	<body>
-    <!--<ul class="nav nav-tabs">
-        <li role="presentation">
-            <a href="/">Home</a>
-        </li>
-        <li role="presentation">
-            <a href="/login">Sign in</a>
-        </li>
-        <li role="presentation">
-            <a href="/game/add">Create Game</a>
-        </li>
-    </ul>-->
 <nav class="navbar navbar-inverse navbar-fixed-top">
 	<div class="container-fluid">
 		<div class="navbar-header">
