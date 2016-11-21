@@ -183,8 +183,8 @@ $app->group('/game', function () use ($app) {
 
                 Redirect::to($app->url_for('game-dashboard', ['gameid' => $game->id]));
             })->alias('game-join');
-        $app->get('/start', function ($gameId) use ($app, $userId) {
-            $view = View::getInstance();
+            $app->get('/start', function ($gameId) use ($app, $userId) {
+                $view = View::getInstance();
 
                 $game = new Game();
                 $game->open($gameId);
@@ -207,13 +207,14 @@ $app->group('/game', function () use ($app) {
                     Redirect::to($app->url_for('index'));
                 }
 
-		    if($game->isAttached($player) && $game->startGame()){
-			    View::getInstance()->flash('Game has started', 'success');
-				Redirect::to($app->url_for('game-dashboard', ['gameid' => $game->id]));
-		    }
-	    View::getInstance()->flash('Cannot start game', 'danger');
-	    Redirect::to($app->url_for('game-detail',['gameid' => $game->id]));
-        })->alias('game-start');
+                if($game->isAttached($player) && $game->startGame()){
+                    View::getInstance()->flash('Game has started', 'success');
+                    Redirect::to($app->url_for('game-dashboard', ['gameid' => $game->id]));
+                }
+
+                View::getInstance()->flash('Cannot start game', 'danger');
+                Redirect::to($app->url_for('game-detail',['gameid' => $game->id]));
+            })->alias('game-start');
             $app->get('/dashboard', function ($gameId) use ($app, $userId) {
                 $game = new Game();
                 $game->open($gameId);
