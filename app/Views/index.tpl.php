@@ -14,12 +14,11 @@
 	foreach ($this->get('joinableGames') as $game) {
 		?>
 		<tr>
-			<a href="<?= $this->get('router')->url_for('game-detail', ['gameid' => $game->id]); ?>">
-				<td><?= $game->id; ?></td>
-				<td><?= $game->name; ?></td>
-				<td><?= $game->name; ?></td>
-				<td><?= $game->name; ?></td>
-			</a>
+
+			<td><a href="<?= $this->get('router')->url_for('game-detail', ['gameid' => $game->id]); ?>"><?= $game->id; ?></a></td>
+			<td><a href="<?= $this->get('router')->url_for('game-detail', ['gameid' => $game->id]); ?>"><?= $game->name; ?></a></td>
+			<td><a href="<?= $this->get('router')->url_for('game-detail', ['gameid' => $game->id]); ?>"><?= count($game->players); ?></a></td>
+			<td><?= $game->name; ?></a></td>
 		</tr>
 		<?php
 	}
