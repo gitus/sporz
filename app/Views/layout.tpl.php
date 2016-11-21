@@ -15,7 +15,7 @@
 			<span class="icon-bar"></span>
 			<span class="icon-bar"></span>
 			</button>
-			<a class="navbar-brand" href="#">Sporz</a>
+			<a class="navbar-brand" href="/">Sporz</a>
 			<?php
 			if ($this->get('username') != null) {
 				?>
