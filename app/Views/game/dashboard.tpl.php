@@ -2,11 +2,11 @@
 <div class="container-fluid">
 	<div class="row">
 		<div class="col-sm-3 col-md-2 sidebar">
-			  <ul class="nav nav-sidebar">
+			<ul class="nav nav-sidebar">
 				<li>Turn: <?= $this->get('game')->turn; ?></li>
 				<li>Your role: <?= $this->get('player')->role; ?></li>
 				<li>Your condition: <?= $this->get('player')->mutated?"Mutant":"Human"; ?></li>
-			  </ul>
+			</ul>
 		</div>
 		<h2 class="sub-header">Joueurs décédés</h2>
 		<div class="table-responsive">
