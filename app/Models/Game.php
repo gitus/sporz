@@ -95,6 +95,7 @@ class Game extends \Pragma\ORM\Model
     {
         if (count($this->players) >= 7) {
             $this->started = 1;
+            $this->turn = 1;
             $this->initGame();
             $this->save();
             return true;
