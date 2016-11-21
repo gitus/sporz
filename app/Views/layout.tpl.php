@@ -6,7 +6,7 @@
 		<link href="/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 	</head>
 	<body>
-<nav class="navbar navbar-inverse navbar-fixed-top">
+<nav class="navbar navbar-inverse navbar-default">
 	<div class="container-fluid">
 		<div class="navbar-header">
 			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
@@ -15,12 +15,12 @@
 			<span class="icon-bar"></span>
 			<span class="icon-bar"></span>
 			</button>
-			<a class="navbar-brand" href="#">Sporz</a>
+			<a class="navbar-brand" href="/">Sporz</a>
 			<?php
-				if ($this->get('username') != null) {
-			?>
+			if ($this->get('username') != null) {
+				?>
 				<p class="navbar-text">Hello, <?= $this->get('username'); ?>!</p>
-			<?php
+				<?php
 				}
 			?>
 		</div>
@@ -34,23 +34,29 @@
 	</div>
 </nav>
 <div class="container-fluid">
-	<div class="row">
-		<br>
-		<br>
-		<br>
-		<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-			<div class="table-responsive">
 	<?php
-	foreach ($this->flushFlash() as $flash) {
+	$flashMessages = $this->flushFlash();
+	if (!empty($flashMessages)) {
 		?>
-		<div class="alert alert-<?= $flash['class']; ?>">
-			<?= $flash['message']; ?>
+		<div class="row">
+			<div class="col-sm-12 col-md-12">
+				<?php
+				foreach ($flashMessages as $flash) {
+					?>
+					<div class="alert alert-<?= $flash['class']; ?>">
+						<?= $flash['message']; ?>
+					</div>
+					<?php
+				}
+				?>
+			</div>
 		</div>
 		<?php
 	}
 	?>
-	<?php $this->yields(); ?>
-			</div>
+	<div class="row">
+		<div class="col-sm-12 col-md-12 main">
+			<?php $this->yields(); ?>
 		</div>
 	</div>
 </div>
