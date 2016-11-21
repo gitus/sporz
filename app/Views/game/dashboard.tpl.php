@@ -29,4 +29,81 @@
 <!-- behold mortal -->
 
 <script>
+var PHASE_DAY_ELECT_LEADER     = 0;
+var PHASE_DAY_VOTE_TO_KILL   = 1;
+var PHASE_NIGHT_MUTANT_MUTE_OR_KILL   = 2;
+var PHASE_NIGHT_MUTANT_PARALYSE   = 3;
+var PHASE_NIGHT_MEDIC   = 4;
+var PHASE_NIGHT_PSYCHO   = 5;
+var PHASE_NIGHT_GENETIC   = 6;
+var PHASE_NIGHT_IT   = 7;
+var PHASE_NIGHT_HACKER   = 8;
+
+var current_phase;
+var current_turn;
+var current_player;
+var last_action;
+setInterval('refreshHUD(<?= $this->game->id; ?>, <?= $this->player->id; ?>)',3000);
+function refreshHUD(gameid, playerid){
+	$.getJSON({
+		url: "<?= $this->get('player-link'); ?>",
+		context: document.body,
+		success: function(player){
+			current_player=player;
+		}
+	});
+	$.getJSON({
+		url: "<?= $this->get('last-action-link'); ?>",
+		context: document.body,
+		success: function(action){
+			last_action=action;
+		}
+	});
+	$.getJSON({
+		url: "<?= $this->get('turn-link'); ?>",
+		context: document.body,
+		success: function(turn){
+			current_turn=turn.result;
+		}
+	});
+	$.getJSON({
+		url: "<?= $this->get('phase-link'); ?>",
+		context: document.body,
+		success: function(phase){
+			current_phase=phase.result;
+		}
+	});
+	if(current_phase == PHASE_DAY_ELECT_LEADER || current_phase == PHASE_DAY_VOTE_TO_KILL){
+		checkLastAction();
+	}
+	if((current_phase == PHASE_NIGHT_MUTANT_MUTE_OR_KILL || current_phase == PHASE_NIGHT_MUTANT_MUTE_OR_KILL) && player.mutated){
+		checkLastAction();
+	}
+	if(current_phase == PHASE_NIGHT_MEDIC && player.role == ROLE_MEDIC && !(player.mutated) && !(player.paralysed)){
+		checkLastAction();
+	}
+	if(current_phase == PHASE_NIGHT_PSYCHO && player.role == ROLE_PSYCHO && !(player.paralysed)){
+		checkLastAction();
+	}
+	if(current_phase == PHASE_NIGHT_GENETIC && player.role == ROLE_GENETIC && !(player.paralysed)){
+		checkLastAction();
+	}
+	/*if(current_phase == PHASE_NIGHT_IT && player.role == ROLE_IT && !(player.paralysed)){
+		checkLastActionIT();
+	}*/
+	if(current_phase == PHASE_NIGHT_HACKER && player.role == ROLE_HACKER && !(player.paralysed)){
+		checkLastActionHacker();
+	}
+}
+function checkLastAction(){
+	if(last_action.turn == current_turn && last_action.phase == current_phase && last_action.confirmed){
+		displayWaitMessage();
+	}else{
+		displayTargetForm();
+	}
+}
+function displayWaitMessage(){
+}
+function displayTargetForm(){
+}
 </script>

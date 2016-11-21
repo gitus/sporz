@@ -245,11 +245,13 @@ $app->group('/game', function () use ($app) {
 					Redirect::to($app->url_for('index'));
 				}
 
-		$view=View::getInstance();
-		$view->assign('game', $game);
-		$view->assign('player', $player);
+				$view=View::getInstance();
+				$view->assign('game', $game);
+				$view->assign('player', $player);
 
-		$view->render('game/dashboard.tpl.php');
+				$view->assign('phase-link', $app->url_for('game-phase',['gameid'=>$game->id]));
+
+				$view->render('game/dashboard.tpl.php');
 
 				// TODO: Main view - game data sum up - ajax refreshing - web stuff
 			})->alias('game-dashboard');
