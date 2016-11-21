@@ -56,9 +56,7 @@
 	?>
 	<div class="row">
 		<div class="col-sm-12 col-md-12 main">
-			<div class="table-responsive">
 			<?php $this->yields(); ?>
-			</div>
 		</div>
 	</div>
 </div>
