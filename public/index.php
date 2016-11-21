@@ -155,19 +155,19 @@ $app->group('/game', function () use ($app) {
 
 			Redirect::to($app->url_for('game-detail', ['gameid' => $game->id]));
 		})->alias('game-save');
-			$app->get('/phase', function ($gameId) use ($app, $userId) {
-				$game = new Game();
-				$game->open($gameId);
+		$app->get('/phase', function ($gameId) use ($app, $userId) {
+			$game = new Game();
+			$game->open($gameId);
 
-				if ($game == null) {
-					View::getInstance()->flash('Inexistent game', 'danger');
-					Redirect::to($app->url_for('index'));
-				}
+			if ($game == null) {
+				View::getInstance()->flash('Inexistent game', 'danger');
+				Redirect::to($app->url_for('index'));
+			}
 
-		ob_clean();
-		echo json_encode(['result'=>$game->phase]);
-		die();
-			})->alias('game-phase');
+			ob_clean();
+			echo json_encode(['result'=>$game->phase]);
+			die();
+		})->alias('game-phase');
 		$app->group('', Security::requireAuthentication($app), function () use ($app) {
 			// User is signed in, we can open the corresponding objet if necessary
 			$userId = $_SESSION['auth']['userid'];
