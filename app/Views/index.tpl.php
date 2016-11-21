@@ -1,15 +1,15 @@
 <h1 class="page-header">Lobby</h1>
 <div class="table-responsive">
 	<table class="table table-striped">
-		 <thead>
-				<tr>
-				  <th>#</th>
-				  <th>Name</th>
-				  <th>Player count</th>
-				  <th>Joined</th>
-				</tr>
-			  </thead>
-			  <tbody>
+		<thead>
+			<tr>
+				<th>#</th>
+				<th>Name</th>
+				<th>Player count</th>
+				<th>Joined</th>
+			</tr>
+		</thead>
+		<tbody>
 	<?php
 	foreach ($this->get('joinableGames') as $game) {
 		?>
