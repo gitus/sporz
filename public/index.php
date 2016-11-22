@@ -11,6 +11,7 @@ use App\Models\Game;
 
 use App\Helpers\Redirect;
 use App\Helpers\Security;
+use App\Helpers\Output;
 
 session_start();
 
@@ -252,9 +253,7 @@ $app->group('/game', function () use ($app) {
 					Redirect::to($app->url_for('index'));
 				}
 
-				ob_clean();
-				echo json_encode(['result' => $game->turn]);
-				die();
+				Output::json($game->turn);
 			})->alias('game-turn');
 			$app->get('/phase', function ($gameId) use ($app, $userId) {
 				$game = new Game();
@@ -265,9 +264,7 @@ $app->group('/game', function () use ($app) {
 					Redirect::to($app->url_for('index'));
 				}
 
-				ob_clean();
-				echo json_encode(['result' => $game->phase]);
-				die();
+				Output::json($game->phase);
 			})->alias('game-phase');
 			// $app->get('/secret', function ($gameId) use ($userId) {
 			//     $game = new Game();
