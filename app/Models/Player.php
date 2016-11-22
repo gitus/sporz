@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-class Player extends \Pragma\ORM\Model
+class Player extends \Pragma\ORM\Model implements \JsonSerializable
 {
 	const GENOME_HOST       = 0;
 	const GENOME_NORMAL     = 1;
@@ -55,5 +55,16 @@ class Player extends \Pragma\ORM\Model
 		}
 
 		return !$this->mutated;
+	}
+
+	public function jsonSerialize()
+	{
+		return array_intersect_key($this->fields,
+			array_flip([
+				'id',
+				'name',
+				'alive',
+			])
+		);
 	}
 }
