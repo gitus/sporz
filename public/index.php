@@ -266,6 +266,17 @@ $app->group('/game', function () use ($app) {
 
 				Output::json($game->phase);
 			})->alias('game-phase');
+			$app->get('/players', function ($gameId) use ($app, $userId) {
+				$game = new Game();
+				$game->open($gameId);
+
+				if ($game == null) {
+					View::getInstance()->flash('Inexistent game', 'danger');
+					Redirect::to($app->url_for('index'));
+				}
+
+				Output::json($game->players);
+			})->alias('game-players');
 			// $app->get('/secret', function ($gameId) use ($userId) {
 			//     $game = new Game();
 			//     $game->open($gameId);
