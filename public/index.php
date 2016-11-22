@@ -155,6 +155,19 @@ $app->group('/game', function () use ($app) {
 
 			Redirect::to($app->url_for('game-detail', ['gameid' => $game->id]));
 		})->alias('game-save');
+		$app->get('/turn', function ($gameId) use ($app, $userId) {
+			$game = new Game();
+			$game->open($gameId);
+
+			if ($game == null) {
+				View::getInstance()->flash('Inexistent game', 'danger');
+				Redirect::to($app->url_for('index'));
+			}
+
+			ob_clean();
+			echo json_encode(['result' => $game->turn]);
+			die();
+		})->alias('game-turn');
 		$app->get('/phase', function ($gameId) use ($app, $userId) {
 			$game = new Game();
 			$game->open($gameId);
@@ -250,6 +263,7 @@ $app->group('/game', function () use ($app) {
 				$view->assign('player', $player);
 
 				$view->assign('phase-link', $app->url_for('game-phase',['gameid'=>$game->id]));
+				$view->assign('turn-link',  $app->url_for('game-turn', ['gameid'=>$game->id]));
 
 				$view->render('game/dashboard.tpl.php');
 
