@@ -178,7 +178,7 @@ $app->group('/game', function () use ($app) {
 			}
 
 			ob_clean();
-			echo json_encode(['result'=>$game->phase]);
+			echo json_encode(['result' => $game->phase]);
 			die();
 		})->alias('game-phase');
 		$app->group('', Security::requireAuthentication($app), function () use ($app) {
@@ -262,7 +262,7 @@ $app->group('/game', function () use ($app) {
 				$view->assign('game', $game);
 				$view->assign('player', $player);
 
-				$view->assign('phase-link', $app->url_for('game-phase',['gameid'=>$game->id]));
+				$view->assign('phase-link', $app->url_for('game-phase', ['gameid'=>$game->id]));
 				$view->assign('turn-link',  $app->url_for('game-turn', ['gameid'=>$game->id]));
 
 				$view->render('game/dashboard.tpl.php');

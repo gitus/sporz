@@ -6,7 +6,7 @@
 			<ul class="nav nav-sidebar">
 				<li>Turn: <?= $this->get('game')->turn; ?></li>
 				<li>Your role: <?= $this->get('player')->role; ?></li>
-				<li>Your condition: <?= $this->get('player')->mutated?"Mutant":"Human"; ?></li>
+				<li>Your condition: <?= $this->get('player')->mutated ? "Mutant" : "Human"; ?></li>
 			</ul>
 		</div>
 		<div class="col-sm-12 col-md-10">
