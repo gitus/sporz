@@ -11,6 +11,7 @@ use App\Models\Game;
 
 use App\Helpers\Redirect;
 use App\Helpers\Security;
+use App\Helpers\Output;
 
 session_start();
 
@@ -155,19 +156,6 @@ $app->group('/game', function () use ($app) {
 
 			Redirect::to($app->url_for('game-detail', ['gameid' => $game->id]));
 		})->alias('game-save');
-		$app->get('/phase', function ($gameId) use ($app, $userId) {
-			$game = new Game();
-			$game->open($gameId);
-
-			if ($game == null) {
-				View::getInstance()->flash('Inexistent game', 'danger');
-				Redirect::to($app->url_for('index'));
-			}
-
-			ob_clean();
-			echo json_encode(['result'=>$game->phase]);
-			die();
-		})->alias('game-phase');
 		$app->group('', Security::requireAuthentication($app), function () use ($app) {
 			// User is signed in, we can open the corresponding objet if necessary
 			$userId = $_SESSION['auth']['userid'];
@@ -249,12 +237,66 @@ $app->group('/game', function () use ($app) {
 				$view->assign('game', $game);
 				$view->assign('player', $player);
 
-				$view->assign('phase-link', $app->url_for('game-phase',['gameid'=>$game->id]));
+				$view->assign('phase-link', $app->url_for('game-phase', ['gameid' => $game->id]));
+				$view->assign('turn-link',  $app->url_for('game-turn', ['gameid' => $game->id]));
+				$view->assign('player-link',  $app->url_for('game-players-detail', ['gameid' => $game->id, 'playerid' => $player->id]));
 
 				$view->render('game/dashboard.tpl.php');
 
 				// TODO: Main view - game data sum up - ajax refreshing - web stuff
 			})->alias('game-dashboard');
+			$app->get('/turn', function ($gameId) use ($app, $userId) {
+				$game = new Game();
+				$game->open($gameId);
+
+				if ($game == null) {
+					View::getInstance()->flash('Inexistent game', 'danger');
+					Redirect::to($app->url_for('index'));
+				}
+
+				Output::json($game->turn);
+			})->alias('game-turn');
+			$app->get('/phase', function ($gameId) use ($app, $userId) {
+				$game = new Game();
+				$game->open($gameId);
+
+				if ($game == null) {
+					View::getInstance()->flash('Inexistent game', 'danger');
+					Redirect::to($app->url_for('index'));
+				}
+
+				Output::json($game->phase);
+			})->alias('game-phase');
+			$app->get('/players', function ($gameId) use ($app, $userId) {
+				$game = new Game();
+				$game->open($gameId);
+
+				if ($game == null) {
+					View::getInstance()->flash('Inexistent game', 'danger');
+					Redirect::to($app->url_for('index'));
+				}
+
+				Output::json($game->players);
+			})->alias('game-players');
+			$app->get('/players/:playerid', function ($gameId, $playerid) use ($app, $userId) {
+				$game = new Game();
+				$game->open($gameId);
+
+				if ($game == null) {
+					View::getInstance()->flash('Inexistent game', 'danger');
+					Redirect::to($app->url_for('index'));
+				}
+
+				$player = new Player();
+				$player->open($playerid);
+
+				if ($player == null) {
+					View::getInstance()->flash('Inexistent game', 'danger');
+					Redirect::to($app->url_for('game-dashboard', ['gameid' => $game->id]));
+				}
+
+				Output::json($player);
+			})->alias('game-players-detail');
 			// $app->get('/secret', function ($gameId) use ($userId) {
 			//     $game = new Game();
 			//     $game->open($gameId);

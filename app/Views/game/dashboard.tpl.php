@@ -6,7 +6,7 @@
 			<ul class="nav nav-sidebar">
 				<li>Turn: <?= $this->get('game')->turn; ?></li>
 				<li>Your role: <?= $this->get('player')->role; ?></li>
-				<li>Your condition: <?= $this->get('player')->mutated?"Mutant":"Human"; ?></li>
+				<li>Your condition: <?= $this->get('player')->mutated ? "Mutant" : "Human"; ?></li>
 			</ul>
 		</div>
 		<div class="col-sm-12 col-md-10">
@@ -43,7 +43,7 @@ var current_phase;
 var current_turn;
 var current_player;
 var last_action;
-setInterval('refreshHUD(<?= $this->game->id; ?>, <?= $this->player->id; ?>)',3000);
+setInterval('refreshHUD(<?= $this->get('game')->id; ?>, <?= $this->get('player')->id; ?>)',3000);
 function refreshHUD(gameid, playerid){
 	$.getJSON({
 		url: "<?= $this->get('player-link'); ?>",
@@ -52,13 +52,13 @@ function refreshHUD(gameid, playerid){
 			current_player=player;
 		}
 	});
-	$.getJSON({
-		url: "<?= $this->get('last-action-link'); ?>",
-		context: document.body,
-		success: function(action){
-			last_action=action;
-		}
-	});
+	//$.getJSON({
+	//	url: "<?= $this->get('last-action-link'); ?>",
+	//	context: document.body,
+	//	success: function(action){
+	//		last_action=action;
+	//	}
+	//});
 	$.getJSON({
 		url: "<?= $this->get('turn-link'); ?>",
 		context: document.body,
