@@ -52,13 +52,13 @@ function refreshHUD(gameid, playerid){
 			current_player=player;
 		}
 	});
-	$.getJSON({
-		url: "<?= $this->get('last-action-link'); ?>",
-		context: document.body,
-		success: function(action){
-			last_action=action;
-		}
-	});
+	//$.getJSON({
+	//	url: "<?= $this->get('last-action-link'); ?>",
+	//	context: document.body,
+	//	success: function(action){
+	//		last_action=action;
+	//	}
+	//});
 	$.getJSON({
 		url: "<?= $this->get('turn-link'); ?>",
 		context: document.body,
