@@ -21,15 +21,6 @@ class Game extends \Pragma\ORM\Model
 		return parent::__construct('game');
 	}
 
-	public function open($gameId)
-	{
-		$ret = parent::open($gameId);
-
-		$this->players = Player::forge()->where('game_id', '=', $this->id)->get_objects();
-
-		return $ret;
-	}
-
 	public function openWithFields($data)
 	{
 		$ret = parent::openWithFields($data);
