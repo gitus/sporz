@@ -43,7 +43,7 @@ var current_phase;
 var current_turn;
 var current_player;
 var last_action;
-setInterval('refreshHUD(<?= $this->game->id; ?>, <?= $this->player->id; ?>)',3000);
+setInterval('refreshHUD(<?= $this->get('game')->id; ?>, <?= $this->get('player')->id; ?>)',3000);
 function refreshHUD(gameid, playerid){
 	$.getJSON({
 		url: "<?= $this->get('player-link'); ?>",
