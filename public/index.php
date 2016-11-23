@@ -242,8 +242,6 @@ $app->group('/game', function () use ($app) {
 				$view->assign('player-link',  $app->url_for('game-players-detail', ['gameid' => $game->id, 'playerid' => $player->id]));
 
 				$view->render('game/dashboard.tpl.php');
-
-				// TODO: Main view - game data sum up - ajax refreshing - web stuff
 			})->alias('game-dashboard');
 			$app->get('/turn', function ($gameId) use ($app, $userId) {
 				$game = new Game();
