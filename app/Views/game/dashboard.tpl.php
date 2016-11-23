@@ -12,7 +12,21 @@
 		<div class="col-sm-12 col-md-10">
 			<h3 class="sub-header">Joueurs décédés</h3>
 			<div class="table-responsive">
-				<table class="table table-striped">
+				<table id="dead_players_tab" class="table table-striped">
+				<thead>
+				<tr>
+				<th>Name</th>
+				<th>Role</th>
+				<th>State</th>
+				</tr>
+				</thead>
+				</table>
+			</div>
+		</div>
+		<div class="col-sm-12 col-md-10">
+			<h3 class="sub-header">Joueurs suspects</h3>
+			<div class="table-responsive">
+				<table id="alive_players_tab" class="table table-striped">
 				<thead>
 				<tr>
 				<th>Name</th>
@@ -73,6 +87,9 @@ function refreshHUD(gameid, playerid){
 			current_phase=phase.result;
 		}
 	});
+	if(current_phase == PHASE_DAY_ELECT_LEADER || current_phase == PHASE_NIGHT_MUTANT_MUTE_OR_KILL){
+		refreshDeadPlayers();
+	}
 	if(current_phase == PHASE_DAY_ELECT_LEADER || current_phase == PHASE_DAY_VOTE_TO_KILL){
 		checkLastAction();
 	}
@@ -105,5 +122,19 @@ function checkLastAction(){
 function displayWaitMessage(){
 }
 function displayTargetForm(){
+}
+function refreshDeadPlayers(){
+	$.getJSON({
+		url: "<?= $this->get('dead-players-link'); ?>",
+		context: document.body,
+		success: function(players){
+			if(players.length>$.('#dead_players_tab tr').length){
+				$.('#dead_players_tab tr').remove();
+				players.forEach(function(p){
+					$.('#dead_players_tab thead').append('<tr><td>'+p.name+'</td><td>'+p.role'+</td><td>'+p.mutated'+</td></tr>');
+				});
+			}
+		}
+	});
 }
 </script>
