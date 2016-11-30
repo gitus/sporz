@@ -9,4 +9,7 @@ vendor:
 migration: config/config.php vendor
 	vendor/bin/phinx migrate
 
-.PHONY: all migration
+tests: migration
+	vendor/bin/phpunit --bootstrap vendor/autoload.php tests/
+
+.PHONY: all migration tests
