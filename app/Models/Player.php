@@ -8,13 +8,13 @@ class Player extends \Pragma\ORM\Model implements \JsonSerializable
 	const GENOME_NORMAL     = 1;
 	const GENOME_RESISTANT  = 2;
 
-	const ROLE_ASTRONAUT  = 0;
-	const ROLE_MEDIC  = 1;
-	const ROLE_PSYCHO  = 2;
-	const ROLE_GENETIC  = 3;
-	const ROLE_HACKER  = 4;
-	const ROLE_IT  = 5;
-	const ROLE_SPY  = 6;
+	const ROLE_ASTRONAUT    = 0;
+	const ROLE_MEDIC        = 1;
+	const ROLE_PSYCHO       = 2;
+	const ROLE_GENETIC      = 3;
+	const ROLE_HACKER       = 4;
+	const ROLE_IT           = 5;
+	const ROLE_SPY          = 6;
 
 	public function __construct()
 	{

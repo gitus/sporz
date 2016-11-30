@@ -57,8 +57,12 @@ var current_phase;
 var current_turn;
 var current_player;
 var last_action;
+
+var sound_chicken = new Audio('/sounds/chicken.wav');
+
 setInterval('refreshHUD(<?= $this->get('game')->id; ?>, <?= $this->get('player')->id; ?>)',3000);
 function refreshHUD(gameid, playerid){
+	sound_chicken.play();
 	$.getJSON({
 		url: "<?= $this->get('player-link'); ?>",
 		context: document.body,
